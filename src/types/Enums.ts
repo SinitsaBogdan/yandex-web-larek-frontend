@@ -2,8 +2,8 @@
  * Перечисление событий выбора типа оплаты
  */
 export enum PaymentsEnum {
-	PAYMENT_ONLINE = 'payment:select-online',
-	PAYMENT_RECEIPT = 'payment:select-receipt',
+	PAYMENT_ONLINE = 'online',
+	PAYMENT_RECEIPT = 'receipt',
 }
 
 /**

@@ -1,8 +1,10 @@
+import { IProductModel } from './Product';
+
 /**
  * Интерфейс модели карточки с полной информацией о товаре
  * @property { IProductModel[] } items - Массив товаров
  */
-export interface ICatalogModel<IProductModel> {
+export interface ICatalogModel {
 	/**
 	 * Массив товаров
 	 * @type { IProductModel[] } items
@@ -21,6 +23,36 @@ export interface ICatalogModel<IProductModel> {
 	 * @returns { IProductModel }
 	 */
 	getItem(id: string): IProductModel;
+}
+
+/**
+ * Интерфейс API методов Catalog
+ */
+export interface CatalogAPI {
+	/**
+	 * GET - Запрос всего списка товаров.
+	 * @returns { IProductModel[] }
+	 */
+	getProducts(): IProductModel[];
+
+	/**
+	 * GET - Запрос конкретного товара по id.
+	 * @param {string} id
+	 * @returns { IProductModel }
+	 */
+	getProduct(id: string): IProductModel;
+}
+
+/**
+ * Контроллер модели товаров связывающий модель с api запросами
+ * @property { ICatalogModel } model
+ */
+export interface CatalogController extends CatalogAPI {
+	/**
+	 * Модель каталога
+	 * @type { ICatalogModel } model
+	 */
+	model: ICatalogModel;
 }
 
 /**

@@ -94,3 +94,26 @@ export interface IOrderModel {
 	 */
 	setBayer(value: IBayerModel): void;
 }
+
+/**
+ * Интерфейс API методов Order
+ */
+export interface OrderAPI {
+	/**
+	 * POST - Отправка заказа на сервер.
+	 * @returns { StatusOrderEnum }
+	 */
+	postOrder(): void;
+}
+
+/**
+ * Контроллер модели заказа связывающий модель с api запросами
+ * @property { IOrderModel } model
+ */
+export interface OrderController extends OrderAPI {
+	/**
+	 * Модель заказа
+	 * @type { IOrderModel } model
+	 */
+	model: IOrderModel;
+}
