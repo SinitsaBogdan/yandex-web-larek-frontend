@@ -14,9 +14,8 @@
 Важные файлы:
 
 -   src/pages/index.html — HTML-файл главной страницы
--   ! src/types/index.ts — файл с типами
 -   src/index.ts — точка входа приложения
--   src/styles/styles.scss — корневой файл стилей
+-   src/scss/styles.scss — корневой файл стилей
 -   src/utils/constants.ts — файл с константами
 -   src/utils/utils.ts — файл с утилитами
 
@@ -244,6 +243,17 @@ constructor(obj?: CatalogType) {
 ### Интерфейс `ICatalogAPI`
 
 Интерфейс API для взаимодействия модуля `Catalog` с сервером, сохранение и обмена информацией.
+
+#### **Конструктор класса:**
+
+Принимает базовый URL и глобальные опции для всех запросов(опционально).
+
+```
+constructor(
+    baseUrl: string,
+    options: RequestInit = {}
+)
+```
 
 #### **Методы класса:**
 
@@ -649,6 +659,17 @@ constructor(obj: OrderType) {
 ### Интерфейс `IOrderAPI`
 
 Интерфейс API для взаимодействия модуля `Order` с сервером, сохранение и обмена информацией.
+
+#### **Конструктор класса:**
+
+Принимает базовый URL и глобальные опции для всех запросов(опционально).
+
+```
+constructor(
+    baseUrl: string,
+    options: RequestInit = {}
+)
+```
 
 #### **Методы класса:**
 
