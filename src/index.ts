@@ -1,11 +1,12 @@
 import './scss/styles.scss';
 
 import './types/Enums.ts';
-import './types/Bayer.ts';
-import './types/Modal.ts';
-import './types/Order.ts';
-import './types/Basket.ts';
-import './types/Catalog.ts';
-import './types/Payment.ts';
-import './types/Product.ts';
-import './types/CompletingPurchase.ts';
+import './types/bayer/IBayerModel';
+import './types/modal/IModalUI';
+import './types/order/OrderType';
+import './types/basket/BasketType';
+import './types/catalog/ICatalogModel';
+import './types/payment/PaymentType';
+import './types/product/ProductType';
+import './types/completing/CompletingType';
+
