@@ -110,7 +110,7 @@
 									<button type="button" class="button button_alt">Онлайн</button>
 									<button type="button" class="button button_alt">При получении</button>
 								</div>
-							</div>  
+							</div>
 							<label class="order__field">
 								<span class="form__label modal__title">Адрес доставки</span>
 								<input class="form__input" type="text" placeholder="Введите адрес" />
@@ -175,23 +175,23 @@
 
 		<template id="card-catalog">
 			<button class="gallery__item card">
-				<span class="card__category card__category_soft">софт-скил</span>
-				<h2 class="card__title">+1 час в сутках</h2>
-				<img class="card__image" src="<%=require('../images/Subtract.svg')%>" alt="" />
-				<span class="card__price">750 синапсов</span>
+				<span class="card__category"></span>
+				<h2 class="card__title"></h2>
+				<img class="card__image" alt="" />
+				<span class="card__price"></span>
 			</button>
 		</template>
 
 		<template id="card-preview">
 			<div class="card card_full">
-				<img class="card__image" src="<%=require('../images/Subtract.svg')%>" alt="" />
+				<img class="card__image" alt="" />
 				<div class="card__column">
-					<span class="card__category card__category_other">другое</span>
-					<h2 class="card__title">Бэкенд-антистресс</h2>
-					<p class="card__text">Если планируете решать задачи в тренажёре, берите два.</p>
+					<span class="card__category"></span>
+					<h2 class="card__title"></h2>
+					<p class="card__description"></p>
 					<div class="card__row">
 						<button class="button card__button">В корзину</button>
-						<span class="card__price">1000 синапсов</span>
+						<span class="card__price"></span>
 					</div>
 				</div>
 			</div>
@@ -199,10 +199,10 @@
 
 		<template id="card-basket">
 			<li class="basket__item card card_compact">
-				<span class="basket__item-index">1</span>
-				<span class="card__title">Фреймворк куки судьбы</span>
-				<span class="card__price">2500 синапсов</span>
-				<button class="basket__item-delete card__button" aria-label="удалить"></button>
+				<span class="basket__item-index"></span>
+				<span class="card__title"></span>
+				<span class="card__price"></span>
+				<button class="basket__item-delete" aria-label="удалить"></button>
 			</li>
 		</template>
 
@@ -223,13 +223,15 @@
 					<div class="order__field">
 						<h2 class="modal__title">Способ оплаты</h2>
 						<div class="order__buttons">
-							<button name="card" type="button" class="button button_alt">Онлайн</button>
-							<button name="cash" type="button" class="button button_alt">При получении</button>
+							<button name="card" type="button" class="button button_alt button-online">Онлайн</button>
+							<button name="cash" type="button" class="button button_alt button-receipt">
+								При получении
+							</button>
 						</div>
 					</div>
 					<label class="order__field">
 						<span class="form__label modal__title">Адрес доставки</span>
-						<input name="address" class="form__input" type="text" placeholder="Введите адрес" />
+						<input name="address" class="form__input form__input-address" type="text" placeholder="Введите адрес" />
 					</label>
 				</div>
 				<div class="modal__actions">
@@ -244,11 +246,11 @@
 				<div class="order">
 					<label class="order__field">
 						<span class="form__label modal__title">Email</span>
-						<input name="email" class="form__input" type="text" placeholder="Введите Email" />
+						<input name="email" class="form__input form__input-email" type="text" placeholder="Введите Email" />
 					</label>
 					<label class="order__field">
 						<span class="form__label modal__title">Телефон</span>
-						<input name="phone" class="form__input" type="text" placeholder="+7 (" />
+						<input name="phone" class="form__input form__input-phone" type="text" placeholder="+7 (" />
 					</label>
 				</div>
 				<div class="modal__actions">
