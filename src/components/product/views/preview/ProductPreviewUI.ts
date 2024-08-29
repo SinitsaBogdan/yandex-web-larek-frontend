@@ -3,6 +3,7 @@ import { IEvents } from '../../../../utils/base/Events';
 import { EventsEnum as EVENT } from '../../../../utils/enums/EventsEnum';
 import { ensureElement } from '../../../../utils/utils';
 import { TProductType } from '../../types/TProductType';
+import { CATEGORY_COLOR } from '../../utils/const';
 import { TProductPreviewSettings } from './types/TProductPreviewSettings';
 
 /**
@@ -125,23 +126,7 @@ export class ProductPreviewUI extends Component<TProductType> {
 	 */
 	public set category(value: string) {
 		this.setText(this._category, value);
-		switch (value) {
-			case 'софт-скил':
-				this._category.classList.add(this.settings.classCategorySoft);
-				break;
-			case 'другое':
-				this._category.classList.add(this.settings.classCategoryOther);
-				break;
-			case 'дополнительное':
-				this._category.classList.add(this.settings.classCategoryAdditional);
-				break;
-			case 'кнопка':
-				this._category.classList.add(this.settings.classCategoryButton);
-				break;
-			case 'хард-скил':
-				this._category.classList.add(this.settings.classCategoryHard);
-				break;
-		}
+		this.toggleClass(this._category, `card__category_${CATEGORY_COLOR[value]}`, true);
 	}
 
 	/**

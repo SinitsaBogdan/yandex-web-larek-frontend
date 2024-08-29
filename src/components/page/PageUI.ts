@@ -15,13 +15,13 @@ import { TPageView } from './types/TPageView';
  */
 export class PageUI extends Component<TPageView> {
 	/**
-     * Свойство `_wrapper` представляет собой HTML-элемент, из которого будет создан DOM-элемент страницы.
-     */
+	 * Свойство `_wrapper` представляет собой HTML-элемент, из которого будет создан DOM-элемент страницы.
+	 */
 	protected _wrapper: HTMLElement;
 
-    /**
-     * Объект `TPageSettings` содержит селекторы для настроек страницы.
-    */
+	/**
+	 * Объект `TPageSettings` содержит селекторы для настроек страницы.
+	 */
 	protected settings: TPageSettings;
 
 	/**
@@ -44,6 +44,6 @@ export class PageUI extends Component<TPageView> {
 	 * @param value - логическое значение, которое будет установлено для свойства
 	 */
 	set locked(value: boolean) {
-		this._wrapper.classList.toggle(this.settings.classNameWrapperLocked, value);
+		this.toggleClass(this._wrapper, this.settings.classNameWrapperLocked, value);
 	}
 }

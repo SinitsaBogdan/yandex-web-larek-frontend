@@ -13,6 +13,9 @@
  * используемыми в вашем приложении, а также позволяет вам легко получать к ним доступ и обновлять их.
  */
 export class ApplicationsModel<P, C> {
+	private _statusValidationFormPayment = false;
+	private _statusValidationFormContacts = false;
+	private _errors = '';
 	/**
 	 * Коллекция презентаторов.
 	 */
@@ -42,5 +45,29 @@ export class ApplicationsModel<P, C> {
 
 	public set components(value: C) {
 		this._components = value;
+	}
+
+	public get statusValidationFormPayment() {
+		return this._statusValidationFormPayment;
+	}
+
+	public set statusValidationFormPayment(value) {
+		this._statusValidationFormPayment = value;
+	}
+
+	public get statusValidationFormContacts() {
+		return this._statusValidationFormContacts;
+	}
+
+	public set statusValidationFormContacts(value) {
+		this._statusValidationFormContacts = value;
+	}
+
+    public get errors() {
+		return this._errors;
+	}
+
+    public set errors(value) {
+		this._errors = value;
 	}
 }

@@ -7,11 +7,11 @@ import { Component } from '../../../utils/base/Component';
 
 /**
  * `ModalUI` расширяет класс `Component` и представляет пользовательский интерфейс (UI) для modal.
- * 
- * Конструктор: 
- * Инициализирует экземпляр ModalUI. 
+ *
+ * Конструктор:
+ * Инициализирует экземпляр ModalUI.
  * Он настраивает необходимые прослушиватели событий для закрытия модала (при нажатии клавиши Escape, при щелчке за пределами модала и при нажатии кнопки закрытия).
- * 
+ *
  * @function open добавляет класс CSS в контейнер модального элемента, указывая, что модальный элемент активен и должен отображаться.
  * @function close Удаляет класс CSS из контейнера модального элемента, эффективно скрывая модальный элемент. Кроме того, он очищает содержимое модального элемента.
  * @function render Этот метод используется для рендеринга модального элемента. Он вызывает метод render родительского класса с предоставленными данными, открывает модальный модуль и возвращает контейнер.
@@ -28,9 +28,9 @@ export class ModalUI extends Component<TModalView> {
 	 */
 	protected _close: HTMLButtonElement;
 
-	/** 
+	/**
 	 * Поле `_content` содержит элемент HTML для отображения содержимого модального элемента.
-	*/
+	 */
 	protected _content: HTMLElement;
 
 	constructor(protected container: HTMLElement, protected events: IEvents, settings: TModalSettings) {
@@ -59,7 +59,7 @@ export class ModalUI extends Component<TModalView> {
 	 * указывая, что модальный элемент активен и должен отображаться.
 	 */
 	open(): void {
-		this.container.classList.add(this.settings.classActive);
+		this.toggleClass(this.container, this.settings.classActive, true);
 	}
 
 	/**
@@ -68,7 +68,7 @@ export class ModalUI extends Component<TModalView> {
 	 */
 	close(): void {
 		this.content = null;
-		this.container.classList.remove(this.settings.classActive);
+		this.toggleClass(this.container, this.settings.classActive, false);
 	}
 
 	/**

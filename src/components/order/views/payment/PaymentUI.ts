@@ -68,7 +68,7 @@ export class PaymentUI extends FormUI<TOrderType> {
 	 * Очищает форму оплаты. Удаляет текст в поле ввода адреса, убирает класс active у кнопок онлайн и получения.
 	 */
 	clear(): void {
-        this._address.value = '';
+		this._address.value = '';
 		this.toggleClass(this._online, this.settings.classNameActive, false);
 		this.toggleClass(this._receipt, this.settings.classNameActive, false);
 	}
@@ -80,11 +80,11 @@ export class PaymentUI extends FormUI<TOrderType> {
 	 */
 	private togglePaymentType(button: HTMLButtonElement) {
 		if (button === this._online) {
-			this._online.classList.add(this.settings.classNameActive);
-			this._receipt.classList.remove(this.settings.classNameActive);
+			this.toggleClass(this._online, this.settings.classNameActive, true);
+			this.toggleClass(this._receipt, this.settings.classNameActive, false);
 		} else {
-			this._online.classList.remove(this.settings.classNameActive);
-			this._receipt.classList.add(this.settings.classNameActive);
+			this.toggleClass(this._online, this.settings.classNameActive, false);
+			this.toggleClass(this._receipt, this.settings.classNameActive, true);
 		}
 	}
 }

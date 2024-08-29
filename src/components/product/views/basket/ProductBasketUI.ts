@@ -12,33 +12,33 @@ import { TProductBasketSettings } from './types/TProductBasketSettings';
  */
 export class ProductBasketUI extends Component<TProductType> {
 	/**
-     * Объект с настройками компонента пользовательского интерфейса корзины продуктов.
-     */
+	 * Объект с настройками компонента пользовательского интерфейса корзины продуктов.
+	 */
 	private readonly settings: TProductBasketSettings;
 
 	/**
-     * Идентификатор продукта
-     */
+	 * Идентификатор продукта
+	 */
 	private _id: string;
 
-    /**
-     * HTML комопнент индекса товара
-    */
+	/**
+	 * HTML комопнент индекса товара
+	 */
 	private _index: HTMLSpanElement;
 
-    /**
-     * HTML комопнент названия продукта
-    */
+	/**
+	 * HTML комопнент названия продукта
+	 */
 	private _title: HTMLSpanElement;
 
-    /**
-     * HTML комопнент цены продукта
-    */
+	/**
+	 * HTML комопнент цены продукта
+	 */
 	private _price: HTMLSpanElement;
 
-    /**
-     * HTML комопнент кнопки удаления
-    */
+	/**
+	 * HTML комопнент кнопки удаления
+	 */
 	private _delete: HTMLButtonElement;
 
 	/**

@@ -4,6 +4,7 @@ import { ensureElement } from '../../../../utils/utils';
 import { TProductCatalogSettings } from './types/TProductCatalogSettings';
 import { TProductType } from '../../types/TProductType';
 import { EventsEnum as EVENT } from '../../../../utils/enums/EventsEnum';
+import { CATEGORY_COLOR } from '../../utils/const';
 
 /**
  * Класс пользовательского интерфейса `ProductCatalog` расширяет класс `Component` и используется для управления пользовательским интерфейсом каталога продуктов.
@@ -62,23 +63,7 @@ export class ProductCatalogUI extends Component<TProductType> {
 
 	public set category(value: string) {
 		this.setText(this._category, value);
-		switch (value) {
-			case 'софт-скил':
-				this._category.classList.add(this.settings.classCategorySoft);
-				break;
-			case 'другое':
-				this._category.classList.add(this.settings.classCategoryOther);
-				break;
-			case 'дополнительное':
-				this._category.classList.add(this.settings.classCategoryAdditional);
-				break;
-			case 'кнопка':
-				this._category.classList.add(this.settings.classCategoryButton);
-				break;
-			case 'хард-скил':
-				this._category.classList.add(this.settings.classCategoryHard);
-				break;
-		}
+		this.toggleClass(this._category, `card__category_${CATEGORY_COLOR[value]}`, true);
 	}
 
 	public set title(value: string) {

@@ -73,11 +73,7 @@ events.on(EVENT.API_ORDER_POST, () => {
 		.postOrder(app.presenters.order.model.toJson())
 		.then((response) => {
 			events.emit(EVENT.LOGGER, { message: 'API_ORDER_POST response : ', response });
-			events.emit(EVENT.RENDER_ORDER_SUCCESS, {
-				title: null,
-				descriptions: null,
-				close: null,
-			});
+			events.emit(EVENT.RENDER_ORDER_SUCCESS);
 			app.presenters.basket.clear();
 			app.presenters.order.model.clear();
 			app.components.payment.clear();
@@ -86,11 +82,7 @@ events.on(EVENT.API_ORDER_POST, () => {
 		})
 		.catch((error) => {
 			events.emit(EVENT.LOGGER, { message: error });
-			events.emit(EVENT.RENDER_ORDER_SUCCESS, {
-				title: 'Упс :(',
-				descriptions: 'Во время оформления заказа произошла ошибка, попробуйте еще раз.',
-				close: 'Вернутся в магазин',
-			});
+			events.emit(EVENT.RENDER_ORDER_SUCCESS);
 		});
 });
 
@@ -204,8 +196,8 @@ events.on(EVENT.RENDER_ORDER_PAYMENT, () => {
 	});
 	events.emit(EVENT.MODAL_OPEN, {
 		content: app.components.payment.render({
-			valid: false,
-			errors: 'Выберите способ оплаты и заполните адрес доставки.',
+			valid: app.statusValidationFormPayment,
+			errors: app.statusValidationFormPayment ? '' : 'Выберите способ оплаты и заполните адрес доставки.',
 			next: EVENT.RENDER_ORDER_CONTACTS,
 		}),
 	});
@@ -215,89 +207,93 @@ events.on(EVENT.RENDER_ORDER_CONTACTS, () => {
 	events.emit(EVENT.LOGGER, { message: 'EVENT.RENDER_ORDER_CONTACTS' });
 	events.emit(EVENT.MODAL_OPEN, {
 		content: app.components.contacts.render({
-			valid: false,
-			errors: 'Введите вашу электронную почту и контактный телефон.',
-			next: EVENT.RENDER_ORDER_CONTACTS,
+			valid: app.statusValidationFormContacts,
+			errors: app.statusValidationFormContacts ? '' : 'Введите ваш контактный телефон и электронную почту.',
+			next: EVENT.RENDER_ORDER_SUCCESS,
 		}),
 	});
 });
 
-events.on(
-	EVENT.RENDER_ORDER_SUCCESS,
-	({ title, descriptions, close }: { title?: string; descriptions?: string; close?: string }) => {
-		events.emit(EVENT.LOGGER, { message: 'EVENT.RENDER_ORDER_SUCCESS' });
-		events.emit(EVENT.MODAL_OPEN, {
-			content: app.components.success.render({
-				title: title ?? 'Заказ оформлен',
-				descriptions: descriptions ?? `Списано ${app.presenters.order.model.total} синапсов`,
-				close: close ?? 'За новыми покупками!',
-			}),
-		});
-	}
-);
+events.on(EVENT.RENDER_ORDER_SUCCESS, () => {
+	events.emit(EVENT.LOGGER, { message: 'EVENT.RENDER_ORDER_SUCCESS' });
+	events.emit(EVENT.MODAL_OPEN, {
+		content: app.components.success.render({
+			descriptions: `Списано ${app.presenters.order.model.total} синапсов`,
+		}),
+	});
+});
 
 events.on(EVENT.CHECK_VALID_FORM_CONTACTS, () => {
 	events.emit(EVENT.LOGGER, { message: 'EVENT.CHECK_VALID_FORM_CONTACTS' });
 
 	if (app.presenters.order.model.phone === '') {
-		events.emit(EVENT.FORM_CONTACTS_ERRORS, {
-			valid: false,
-			message: 'Введите ваш контактный телефон для обратной связи.',
-		});
+		app.statusValidationFormContacts = false;
+		app.errors = 'Введите ваш контактный телефон для обратной связи.';
+		events.emit(EVENT.FORM_CONTACTS_ERRORS);
 		return;
 	}
 
 	if (app.presenters.order.model.phone.length < 11) {
-		events.emit(EVENT.FORM_CONTACTS_ERRORS, {
-			valid: false,
-			message: 'Номер должен содержать не меньше 11 цифр.',
-		});
+		app.statusValidationFormContacts = false;
+		app.errors = 'Номер должен содержать не меньше 11 цифр.';
+		events.emit(EVENT.FORM_CONTACTS_ERRORS);
 		return;
 	}
 
 	if (app.presenters.order.model.email === '') {
-		events.emit(EVENT.FORM_CONTACTS_ERRORS, {
-			valid: false,
-			message: 'Введите вашу электронную почту для обратной связи.',
-		});
+		app.statusValidationFormContacts = false;
+		app.errors = 'Введите вашу электронную почту для обратной связи.';
+		events.emit(EVENT.FORM_CONTACTS_ERRORS);
 		return;
 	}
 
 	if (app.presenters.order.model.email.length < 6) {
-		events.emit(EVENT.FORM_CONTACTS_ERRORS, {
-			valid: false,
-			message: 'Адрес электронной почты должен содержать не меньше 6 символов.',
-		});
+		app.statusValidationFormContacts = false;
+		app.errors = 'Адрес электронной почты должен содержать не меньше 6 символов.';
+		events.emit(EVENT.FORM_CONTACTS_ERRORS);
 		return;
 	}
 
-	if (app.presenters.order.model.email !== '' && app.presenters.order.model.phone !== '')
-		events.emit(EVENT.FORM_CONTACTS_ERRORS, { valid: true, message: '' });
+	if (app.presenters.order.model.email !== '' && app.presenters.order.model.phone !== '') {
+		app.statusValidationFormContacts = true;
+		app.errors = '';
+	} else {
+		app.errors = 'Введите вашу электронную почту и контактный телефон';
+		app.statusValidationFormContacts = false;
+	}
+
+	events.emit(EVENT.FORM_CONTACTS_ERRORS);
 });
 
 events.on(EVENT.CHECK_VALID_FORM_PAYMENT, () => {
 	events.emit(EVENT.LOGGER, { message: 'EVENT.CHECK_VALID_FORM_PAYMENT' });
 
 	if (app.presenters.order.model.payment === '') {
-		events.emit(EVENT.FORM_PAYMENT_ERRORS, { valid: false, message: 'Выберите способ оплаты' });
+		app.statusValidationFormPayment = false;
+		app.errors = 'Выберите способ оплаты';
+		events.emit(EVENT.FORM_PAYMENT_ERRORS);
 		return;
 	}
 
 	if (app.presenters.order.model.address === '') {
-		events.emit(EVENT.FORM_PAYMENT_ERRORS, { valid: false, message: 'Введите адрес доставки' });
+		app.errors = 'Введите адрес доставки';
+		app.statusValidationFormPayment = false;
+		events.emit(EVENT.FORM_PAYMENT_ERRORS);
 		return;
 	}
 
 	if (app.presenters.order.model.address.length < 10) {
-		events.emit(EVENT.FORM_PAYMENT_ERRORS, {
-			valid: false,
-			message: 'Адрес доставки должен содержать более 10 символов',
-		});
+		app.errors = 'Адрес доставки должен содержать более 10 символов';
+		app.statusValidationFormPayment = false;
+		events.emit(EVENT.FORM_PAYMENT_ERRORS);
 		return;
 	}
 
-	if (app.presenters.order.model.payment !== '' && app.presenters.order.model.address !== '')
-		events.emit(EVENT.FORM_PAYMENT_ERRORS, { valid: true, message: '' });
+	if (app.presenters.order.model.payment !== '' && app.presenters.order.model.address !== '') {
+		app.statusValidationFormPayment = true;
+		app.errors = '';
+	}
+	events.emit(EVENT.FORM_PAYMENT_ERRORS);
 });
 
 events.on(
@@ -318,16 +314,37 @@ events.on(
 	}
 );
 
-events.on(EVENT.FORM_PAYMENT_ERRORS, ({ valid, message }: { valid?: boolean; message?: string }) => {
+events.on(EVENT.FORM_PAYMENT_ERRORS, () => {
 	events.emit(EVENT.LOGGER, { message: 'EVENT.FORM_PAYMENT_ERRORS' });
-	if (valid) app.components.payment.render({ valid: true, errors: '', next: EVENT.RENDER_ORDER_CONTACTS });
-	else app.components.payment.render({ valid: false, errors: message, next: EVENT.RENDER_ORDER_PAYMENT });
+	if (app.statusValidationFormPayment)
+		app.components.payment.render({
+			valid: app.statusValidationFormPayment,
+			errors: app.errors,
+			next: EVENT.RENDER_ORDER_CONTACTS,
+		});
+	else
+		app.components.payment.render({
+			valid: app.statusValidationFormPayment,
+			errors: app.errors,
+			next: EVENT.RENDER_ORDER_PAYMENT,
+		});
 });
 
-events.on(EVENT.FORM_CONTACTS_ERRORS, ({ valid, message }: { valid?: boolean; message?: string }) => {
+events.on(EVENT.FORM_CONTACTS_ERRORS, () => {
 	events.emit(EVENT.LOGGER, { message: 'EVENT.FORM_CONTACTS_ERRORS' });
-	if (valid) app.components.contacts.render({ valid: true, errors: '', next: EVENT.API_ORDER_POST });
-	else app.components.contacts.render({ valid: false, errors: message, next: EVENT.RENDER_ORDER_CONTACTS });
+	if (app.statusValidationFormContacts) {
+		console.log(true);
+		app.components.contacts.render({
+			valid: app.statusValidationFormContacts,
+			errors: app.errors,
+			next: EVENT.API_ORDER_POST,
+		});
+	} else
+		app.components.contacts.render({
+			valid: app.statusValidationFormContacts,
+			errors: app.errors,
+			next: EVENT.RENDER_ORDER_CONTACTS,
+		});
 });
 
 events.on(EVENT.LOGGER, ({ message }: { message: string }) => {
