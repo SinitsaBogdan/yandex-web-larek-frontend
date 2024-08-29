@@ -333,7 +333,6 @@ events.on(EVENT.FORM_PAYMENT_ERRORS, () => {
 events.on(EVENT.FORM_CONTACTS_ERRORS, () => {
 	events.emit(EVENT.LOGGER, { message: 'EVENT.FORM_CONTACTS_ERRORS' });
 	if (app.statusValidationFormContacts) {
-		console.log(true);
 		app.components.contacts.render({
 			valid: app.statusValidationFormContacts,
 			errors: app.errors,

@@ -33,6 +33,12 @@ export class ModalUI extends Component<TModalView> {
 	 */
 	protected _content: HTMLElement;
 
+	_handleEscape = (evt: KeyboardEvent) => {
+		if (evt.key === 'Escape') {
+			this.close();
+		}
+	};
+
 	constructor(protected container: HTMLElement, protected events: IEvents, settings: TModalSettings) {
 		super(container);
 		this.settings = settings;
@@ -40,9 +46,6 @@ export class ModalUI extends Component<TModalView> {
 		this._close = ensureElement<HTMLButtonElement>(settings.selectorClose, container);
 		this._content = ensureElement<HTMLElement>(settings.selectorContent, container);
 
-		document.addEventListener('keydown', (event) => {
-			if (event.key === 'Escape') events.emit(EVENT.MODAL_CLOSE);
-		});
 		this._close.addEventListener('click', () => events.emit(EVENT.MODAL_CLOSE));
 		this.container.addEventListener('click', (event) => {
 			const withinBoundaries = event.composedPath().includes(this._content);
@@ -59,6 +62,7 @@ export class ModalUI extends Component<TModalView> {
 	 * указывая, что модальный элемент активен и должен отображаться.
 	 */
 	open(): void {
+		document.addEventListener('keydown', this._handleEscape);
 		this.toggleClass(this.container, this.settings.classActive, true);
 	}
 
@@ -67,8 +71,9 @@ export class ModalUI extends Component<TModalView> {
 	 * указывающий на активность модального элемента.
 	 */
 	close(): void {
-		this.content = null;
+		document.addEventListener('keydown', this._handleEscape);
 		this.toggleClass(this.container, this.settings.classActive, false);
+		this.content = null;
 	}
 
 	/**
