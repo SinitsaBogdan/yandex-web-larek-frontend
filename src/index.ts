@@ -61,7 +61,7 @@ const app = new ApplicationsModel<TPresenters, TComponents>(
 		basketShort: new BasketShortUI(basketShortComponent, events, CONST.BASKET_SHORT_SETTINGS),
 		basketFull: new BasketFullUI(cloneTemplate(basketFullTemplate), events, CONST.BASKET_SETTINGS),
 		payment: new PaymentUI(cloneTemplate(orderPaymentTemplate), events, CONST.PAYMENT_SETTINGS),
-		contacts: new ContactsUI(cloneTemplate(orderContactsTemplate), events),
+		contacts: new ContactsUI(cloneTemplate(orderContactsTemplate), events, CONST.CONTACTS_SETTINGS),
 		modal: new ModalUI(modalComponent, events, CONST.MODAL_SETTINGS),
 		success: new SuccessUI(cloneTemplate(orderSuccessTemplate), events, CONST.SUCCESS_SETTINGS),
 	}
@@ -78,6 +78,11 @@ events.on(EVENT.API_ORDER_POST, () => {
 				descriptions: null,
 				close: null,
 			});
+			app.presenters.basket.clear();
+			app.presenters.order.model.clear();
+			app.components.payment.clear();
+			app.components.contacts.clear();
+			events.emit(EVENT.RENDER_BASKET_SHORT);
 		})
 		.catch((error) => {
 			events.emit(EVENT.LOGGER, { message: error });
@@ -86,13 +91,6 @@ events.on(EVENT.API_ORDER_POST, () => {
 				descriptions: 'Во время оформления заказа произошла ошибка, попробуйте еще раз.',
 				close: 'Вернутся в магазин',
 			});
-		})
-		.finally(() => {
-			app.presenters.basket.clear();
-			app.presenters.order.model.clear();
-			app.components.payment = new PaymentUI(cloneTemplate(orderPaymentTemplate), events, CONST.PAYMENT_SETTINGS);
-			app.components.contacts = new ContactsUI(cloneTemplate(orderContactsTemplate), events);
-			events.emit(EVENT.RENDER_BASKET_SHORT);
 		});
 });
 

@@ -36,6 +36,11 @@ export class PaymentUI extends FormUI<TOrderType> {
 	private _receipt: HTMLButtonElement;
 
 	/**
+	 * Свойство `_address` представляет собой HTML-элемент поля для ввода адреса.
+	 */
+	private _address: HTMLInputElement;
+
+	/**
 	 * @param container - контейнер, в котором будет отображаться форма оплаты
 	 * @param events - экземпляр класса IEvents, через который происходит коммуникация между компонентами
 	 * @param settings - настройки для отображения формы оплаты
@@ -46,6 +51,7 @@ export class PaymentUI extends FormUI<TOrderType> {
 
 		this._online = ensureElement(settings.selectorOnline, container) as HTMLButtonElement;
 		this._receipt = ensureElement(settings.selectorReceit, container) as HTMLButtonElement;
+		this._address = ensureElement(settings.selectorInputAddress, container) as HTMLInputElement;
 
 		this._online.addEventListener('click', () => {
 			events.emit(EVENT.BROCKER_FORM_VALIDATOR, { field: 'payment', value: PaymentTypesEnums.ONLINE });
@@ -56,6 +62,15 @@ export class PaymentUI extends FormUI<TOrderType> {
 			events.emit(EVENT.BROCKER_FORM_VALIDATOR, { field: 'payment', value: PaymentTypesEnums.RECEIPT });
 			this.togglePaymentType(this._receipt);
 		});
+	}
+
+	/**
+	 * Очищает форму оплаты. Удаляет текст в поле ввода адреса, убирает класс active у кнопок онлайн и получения.
+	 */
+	clear(): void {
+        this._address.value = '';
+		this.toggleClass(this._online, this.settings.classNameActive, false);
+		this.toggleClass(this._receipt, this.settings.classNameActive, false);
 	}
 
 	/**

@@ -16,8 +16,7 @@ import { SuccessUI } from '../../order/views/success/SuccessUI';
  * @property contacts Компонент модального окна контактов.
  * @property modal Компонент модального окна.
  * @property success Компонент модального окна завершения формирования заказа.
- *
- * Note that this type definition does not define any methods, only properties.
+ * @description Типизация объекта UI компонентов для приложения.
  */
 export type TComponents = {
 	page: PageUI;

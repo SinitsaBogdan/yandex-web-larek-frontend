@@ -54,9 +54,14 @@ export const PRODUCT_CATALOG_SETTINGS = {
 export const PAYMENT_SETTINGS = {
 	selectorOnline: '.button-online',
 	selectorReceit: '.button-receipt',
+	selectorInputAddress: '.form__input-address',
 	classNameActive: 'button_alt-active',
 };
 
+export const CONTACTS_SETTINGS = {
+	selectorInputPhone: '.form__input-phone',
+	selectorInputEmail: '.form__input-email',
+};
 export const MODAL_SETTINGS = {
 	selectorContent: '.modal__content',
 	selectorClose: '.modal__close',
