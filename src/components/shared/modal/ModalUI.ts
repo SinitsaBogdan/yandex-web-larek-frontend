@@ -46,10 +46,10 @@ export class ModalUI extends Component<TModalView> {
 		this._close = ensureElement<HTMLButtonElement>(settings.selectorClose, container);
 		this._content = ensureElement<HTMLElement>(settings.selectorContent, container);
 
-		this._close.addEventListener('click', () => events.emit(EVENT.MODAL_CLOSE));
+		this._close.addEventListener('click', () => this.close());
 		this.container.addEventListener('click', (event) => {
 			const withinBoundaries = event.composedPath().includes(this._content);
-			if (!withinBoundaries) events.emit(EVENT.MODAL_CLOSE);
+			if (!withinBoundaries) this.close();
 		});
 	}
 
@@ -64,16 +64,17 @@ export class ModalUI extends Component<TModalView> {
 	open(): void {
 		document.addEventListener('keydown', this._handleEscape);
 		this.toggleClass(this.container, this.settings.classActive, true);
+		// this.events.emit(EVENT.MODAL_OPEN, {content: this._content});
 	}
 
 	/**
-	 * Метод close очищает содержимое модального элемента и удаляет класс CSS,
-	 * указывающий на активность модального элемента.
+	 * Метод close Удаляет класс CSS из контейнера модального элемента,
+	 * эффективно скрывая модальный элемент. Кроме того, он очищает содержимое модального элемента.
 	 */
 	close(): void {
-		document.addEventListener('keydown', this._handleEscape);
+		document.removeEventListener('keydown', this._handleEscape);
 		this.toggleClass(this.container, this.settings.classActive, false);
-		this.content = null;
+		this.events.emit(EVENT.MODAL_CLOSE)
 	}
 
 	/**

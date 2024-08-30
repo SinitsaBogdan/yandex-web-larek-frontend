@@ -48,7 +48,9 @@ export class SuccessUI extends Component<TSuccessView> {
 		this._descriptions = ensureElement(this.settings.selectorDescription, container) as HTMLElement;
 		this._close = ensureElement(this.settings.selectorBtnClose, container) as HTMLButtonElement;
 
-		this._close.addEventListener('click', () => events.emit(EVENT.MODAL_CLOSE));
+		this._close.addEventListener('click', () => {
+			events.emit(EVENT.SUCCESS_CLOSE)
+		});
 	}
 
 	/**

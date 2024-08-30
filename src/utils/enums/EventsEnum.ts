@@ -77,6 +77,11 @@ export enum EventsEnum {
 	RENDER_ORDER_SUCCESS = 'render:order-success',
 
 	/**
+	 * Событие закрытия модального окна с информацией о завершении формирования заказа
+	 */
+	SUCCESS_CLOSE = 'success:close',
+
+	/**
 	 * Броккер получил данные для распределения по валидаторам форм.
 	 */
 	BROCKER_FORM_VALIDATOR = 'form:check-valid',

@@ -69,6 +69,9 @@ const app = new ApplicationsModel<TPresenters, TComponents>(
 
 events.on(EVENT.API_ORDER_POST, () => {
 	events.emit(EVENT.LOGGER, { message: 'EVENT.API_ORDER_POST' });
+	app.presenters.basket.getAllItems().forEach((item) => {
+		if (item.price != null) app.presenters.order.model.addItem(item);
+	});
 	api.order
 		.postOrder(app.presenters.order.model.toJson())
 		.then((response) => {
@@ -124,7 +127,12 @@ events.on(EVENT.MODAL_OPEN, ({ content }: { content: HTMLElement }) => {
 events.on(EVENT.MODAL_CLOSE, () => {
 	events.emit(EVENT.LOGGER, { message: 'EVENT.MODAL_CLOSE' });
 	app.components.page.locked = false;
-	app.components.modal.close();
+	app.components.modal.content = null;
+});
+
+events.on(EVENT.SUCCESS_CLOSE, () => {
+	events.emit(EVENT.LOGGER, { message: 'EVENT.SUCCESS_CLOSE' });
+	app.components.modal.close()
 });
 
 events.on(EVENT.BASKET_ADD_PRODUCT, ({ id }: { id: string }) => {
@@ -191,9 +199,6 @@ events.on(EVENT.RENDER_BASKET_FULL, () => {
 
 events.on(EVENT.RENDER_ORDER_PAYMENT, () => {
 	events.emit(EVENT.LOGGER, { message: 'EVENT.RENDER_ORDER_PAYMENT' });
-	app.presenters.basket.getAllItems().forEach((item) => {
-		if (item.price != null) app.presenters.order.model.addItem(item);
-	});
 	events.emit(EVENT.MODAL_OPEN, {
 		content: app.components.payment.render({
 			valid: app.statusValidationFormPayment,
